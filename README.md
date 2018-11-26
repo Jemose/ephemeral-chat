@@ -71,8 +71,8 @@ With the use of the load balancer / service registry and the gateway edge servic
 ### **POST /chat**
   Creates a new text message for passed in username. This message will be persisted in the backend database as well as stored in the distributed cache. "timeout" is optional, with a default value of 0. Username or text can not be null/empty. Timeout can not be a negative or 0 value.
 
-  <pre>
   Example request body
+  <pre>
   {
     "username": "David", 
     "text": "A short-lived message", 
@@ -102,8 +102,8 @@ With the use of the load balancer / service registry and the gateway edge servic
 ### **GET /chats/{username}**
   Returns a list of unexpired messages from the Hot Storage system. The messages are moved from the Hot Storage into the Cold storage in the backend. These messages can no longer be retrieved via this endpoint. 
   
-  <pre>
   Example response body
+  <pre>
   [
     {
       "id": 5656,
