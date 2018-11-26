@@ -89,7 +89,7 @@ public class ChatController {
         HotMessage hotMessage = chatService.saveMessage(timedMessage);
 
         // Simple 'id' json response
-        return new ResponseEntity<>(modelMapper.map(hotMessage, IdView.class), HttpStatus.OK);
+        return new ResponseEntity<>(modelMapper.map(hotMessage, IdView.class), HttpStatus.CREATED);
     }
 
     /**
