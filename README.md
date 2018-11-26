@@ -46,16 +46,20 @@ With the use of the load balancer / service registry and the gateway edge servic
 ## Running the Services
 3) Run the JAR of each service. Order of startup is not mandatory but for fastest startup with no warnings, use this order:
 
+  <pre>
   java -jar /service-registry/target/service-registry-1.0.0-SNAPSHOT.jar
   java -jar /edge-service/target/edge-service-1.0.0.SNAPSHOT.jar
   java -jar /chat-service/target/chat-service-1.0.0.SNAPSHOT.jar
+  </pre>
   
   To run more instances to demonstrate horizontal scalability, at any time, run additional instances of the chat-service. A service may take up to 30 seconds to register with the Service Registry.
   * Note: The chat-service defaults to run on port 9000, any additional instance will need to be configured for another available port. This can be done dynamically via the command line
   
+  <pre>
   java -jar /chat-service/target/chat-service-1.0.0.SNAPSHOT.jar --server.port=9001
   java -jar /chat-service/target/chat-service-1.0.0.SNAPSHOT.jar --server.port=9002
   java -jar /chat-service/target/chat-service-1.0.0.SNAPSHOT.jar --server.port=9003
+  </pre>
   
   # API
   To communicate directly with the chat-service, you can use the API via the address of the service:
@@ -68,42 +72,49 @@ With the use of the load balancer / service registry and the gateway edge servic
   Creates a new text message for passed in username. This message will be persisted in the backend database as well as stored in the distributed cache. "timeout" is optional, with a default value of 0. Username or text can not be null/empty. Timeout can not be a negative or 0 value.
 
   Example request body
+  <pre>
   {
     "username": "David", 
     "text": "A short-lived message", 
     "timeout": 25
   }
+  </pre>
   
   Example response body
+  <pre>
   {
     "id": 9876
   }
+  </pre>
   
 ### **GET /chat/{id}**
   Returns the message object for the given id. This service can return both expired and unexpired messages.
   
   Example response body
+  <pre>
   {
     "username": "David",
     "text": "A longer-lived message"
     "expiration_date": "2018-12-30 15:20:30" 
   }
+  </pre>
 
 ### **GET /chats/{username}**
   Returns a list of unexpired messages from the Hot Storage system. The messages are moved from the Hot Storage into the Cold storage in the backend. These messages can no longer be retrieved via this endpoint. 
   
+  <pre>
   Example response body
   [
     {
       "id": 5656,
-      "text": "This is a message" 
+      "text": "This is a message"
     },
     {
       "id": 95958,
       "text": "This is also a message"
-    } 
+    }
   ]
-  
+  </pre>
 
 
 # Epilogue
