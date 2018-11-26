@@ -4,13 +4,13 @@
 This project uses Java JDK 8, maven, Spring Framework, and MySql.
 
 ## Modules
-**Chat-Service** : Main application that handles chat messaging logic. Can be scaled with multiple instances.
-**Service-Registry** : Service Registry and Load Balancer. Allows for the services to connect and communicate with each other.
-**Edge-Service** : A Zuul implemented gateway 'edge service'. Allows for clients to make a request into the microservice cluster and have the request be load balanced between the horizontally scaled, multiple instances of the chat-service's. 
+**Chat-Service** : Main application that handles chat messaging logic. Can be scaled with multiple instances.\
+**Service-Registry** : Service Registry and Load Balancer. Allows for the services to connect and communicate with each other.\
+**Edge-Service** : A Zuul implemented gateway 'edge service'. Allows for clients to make a request into the microservice cluster and have the request be load balanced between the horizontally scaled, multiple instances of the chat-service's.\
 **Chat-Service-Client-Library** : Client library jar for java implemented clients to import and use the DTO's for quicker use of the API's.
 
 ## Summary
-Ephemeral Chat application. Messages are implemented in a hot/cold storage system. 
+Ephemeral Chat application. Messages are implemented in a hot/cold storage system.\
 There is an API endpoint to persist a message initially into the 'Hot Storage' with an optional timeout. The timeout will begin counting down as soon as it is persisted. Upon expiring, the message will be moved to the 'Cold Storage'. Alternatively another API endpoint to retrieve all unexpired messages for a given username is available. This will immediately cause the retrieved messages to expire and move to cold storage as well.
 
 ## Presistence
@@ -25,23 +25,23 @@ With the use of the load balancer / service registry and the gateway edge servic
 1) Download MySQL Community Server
   https://dev.mysql.com/downloads/mysql/
 
-  Follow the steps in the installer setup.
+  Follow the steps in the installer setup.\
   Once it asks for a password, choose "password" for the password for 'root'. Alternatively any password can be chosen,   however the application.yml configuration file will need to be updated in the chat-service accordingly.
 
-  Mysql service should start running immediately. 
-  Start the command line interface.
+  Mysql service should start running immediately.\
+  Start the command line interface.\
   If on Linux/Mac, update the PATH variable with the mysql location PATH="/usr/local/mysql/bin:$PATH" Or alternatively navigate to the bin and run the sql interface directly
 
-  Run the command line interface by typing: "mysql -u root -p"
+  Run the command line interface by typing: "mysql -u root -p"\
   It will ask for password, type 'password' as was configured during installation
 
-  Create the database that is to be used: **"CREATE DATABASE chatdb;"**
+  Create the database that is to be used: **CREATE DATABASE chatdb;**
 
 ## Downloading / Compiling the Services
-2) Clone this repository and navigate to the root directory
-  Compile the parent pom, which in turn compiles the child modules by running "mvn clean install"
-  The appropriate libraries should be downloaded and installed to assemble the JAR files
-  After getting "SUCCESS", you're ready to start each service.
+2) Clone this repository and navigate to the root directory\
+  Compile the parent pom, which in turn compiles the child modules by running **mvn clean install**\
+  The appropriate libraries should be downloaded and installed to assemble the JAR files\
+  After getting "SUCCESS", you're ready to start each service.\
   
 ## Running the Services
 3) Run the JAR of each service. Order of startup is not mandatory but for fastest startup with no warnings, use this order:
@@ -62,17 +62,17 @@ With the use of the load balancer / service registry and the gateway edge servic
   </pre>
   
   # API
-  To communicate directly with the chat-service, you can use the API via the address of the service:
-  For Example: GET operation: http://localhost:9000/chat/{id} (Description below)
-  However this eliminates the benefits of the gateway service and horizontal scaling. Therefore by going through the edge service, it will forward the API request to any available chat-service instance running and registered. 
-  For Example: GET operation: http://localhost:8080/chat-service/chat/{id}
-  As you can see the port has changed from 9000 (Chat-Service) to 8080 (Edge-Service), and an additional */chat-service/* has entered the URL, and that's used to tell the edge service where to forward the request to.
+  To communicate directly with the chat-service, you can use the API via the address of the service:\
+  For Example: GET operation: http://localhost:9000/chat/{id} (Description below)\
+  However this eliminates the benefits of the gateway service and horizontal scaling. Therefore by going through the edge service, it will forward the API request to any available chat-service instance running and registered.\
+  For Example: GET operation: http://localhost:8080/chat-service/chat/{id}\
+  As you can see the port has changed from 9000 (Chat-Service) to 8080 (Edge-Service), and an additional */chat-service/* has entered the URL, and that's used to tell the edge service where to forward the request to.\
   
 ### **POST /chat**
   Creates a new text message for passed in username. This message will be persisted in the backend database as well as stored in the distributed cache. "timeout" is optional, with a default value of 0. Username or text can not be null/empty. Timeout can not be a negative or 0 value.
 
-  Example request body
   <pre>
+  Example request body
   {
     "username": "David", 
     "text": "A short-lived message", 
